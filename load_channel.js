@@ -187,7 +187,7 @@
         document.addEventListener("scroll", function (event) {
             if (
                 window.innerHeight + window.pageYOffset >=
-                document.body.offsetHeight
+                document.body.offsetHeight - 15
             ) {
                 for (let i = 0; i <= 4; i++) {
                     if (chunkedData[at]) {
