@@ -10,6 +10,8 @@ apiKey.val(localStorage.getItem("key"))
 setApiKey.click(function() {
     const key = apiKey.val().trim().replaceAll(" ", "");
     localStorage.setItem("key", key);
+    window.location.href = window.location.href;
+    return false;
 });
 let operating = false
 
