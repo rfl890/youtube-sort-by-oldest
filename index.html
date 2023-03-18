@@ -24,18 +24,6 @@
     <div class="container">
         <h1 class="text-center mt-1">YouTube Sort By Oldest</h1>
         <p class="text-center">Sort a YouTube channel's videos by oldest, after YouTube removed the feature.</p>
-        <div class="row">
-            <div class="col text-center">
-                <a role="button" title="IMPORTANT - READ ME FIRST" href="/api_key.html"
-                    class="btn btn-primary btn-lg text-center mb-2" type="button">
-                    IMPORTANT - READ ME FIRST
-                </a> <br>
-                <a role="button" title="Settings" href="/settings.html"
-                    class="btn btn-primary btn-lg text-center" type="button">
-                    Settings
-                </a>
-            </div>
-        </div>
         <div class="mb-3 mt-3">
             <input type="text" class="form-control" id="youtube_url" placeholder="YouTube channel link">
         </div>
@@ -45,6 +33,14 @@
             <div id="sort-btn-spinner" class="spinner-border spinner-border-sm d-none" role="status"></div>
         </button>
         <p class="text-danger d-none" id="error">Error: invalid channel URL, please check if it is correct</p>
+        <div class="row">
+            <div class="col text-center">
+                <a role="button" title="Settings" href="/settings.html"
+                    class="btn btn-primary btn-lg text-center" type="button">
+                    Settings
+                </a>
+            </div>
+        </div>
     </div>
     <script src="index.js"></script>
 </body>

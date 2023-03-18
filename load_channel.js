@@ -6,39 +6,76 @@
         const items = [];
         let amount = 0;
         let itemsProcessed = 0;
-        while (true) {
-            if (currentPageToken === "not-set") {
-                const data = await (
-                    await fetch(
-                        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${playlistId}&key=${apiKey}`
-                    )
-                ).json();
-                data.items.forEach((item) => items.push(item));
-                amount = data.pageInfo.totalResults;
-                currentPageToken = data.nextPageToken;
-                itemsProcessed += data.items.length;
-                if (!currentPageToken) break;
-            } else {
-                const data = await (
-                    await fetch(
-                        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${playlistId}&key=${apiKey}&pageToken=${currentPageToken}`
-                    )
-                ).json();
-                currentPageToken = data.nextPageToken;
-                data.items.forEach((item) => items.push(item));
-                itemsProcessed += data.items.length;
-                progressCb(
-                    `Processed ${itemsProcessed}/${amount} videos | ${(
-                        (itemsProcessed / amount) *
-                        100
-                    ).toFixed(2)}% done`
-                );
-                if (currentPageToken == undefined) {
-                    console.log("\nDone");
-                    break;
+        if (apiKey) {
+            while (true) {
+                if (currentPageToken === "not-set") {
+                    const data = await (
+                        await fetch(
+                            `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${playlistId}&key=${apiKey}`
+                        )
+                    ).json();
+                    data.items.forEach((item) => items.push(item));
+                    amount = data.pageInfo.totalResults;
+                    currentPageToken = data.nextPageToken;
+                    itemsProcessed += data.items.length;
+                    if (!currentPageToken) break;
+                } else {
+                    const data = await (
+                        await fetch(
+                            `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${playlistId}&key=${apiKey}&pageToken=${currentPageToken}`
+                        )
+                    ).json();
+                    currentPageToken = data.nextPageToken;
+                    data.items.forEach((item) => items.push(item));
+                    itemsProcessed += data.items.length;
+                    progressCb(
+                        `Processed ${itemsProcessed}/${amount} videos | ${(
+                            (itemsProcessed / amount) *
+                            100
+                        ).toFixed(2)}% done`
+                    );
+                    if (currentPageToken == undefined) {
+                        console.log("\nDone");
+                        break;
+                    }
                 }
+                await sleep(50);
             }
-            await sleep(50);
+        } else {
+            while (true) {
+                if (currentPageToken === "not-set") {
+                    const data = await (
+                        await fetch(
+                            `https://yt.lemnoslife.com/noKey/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${playlistId}`
+                        )
+                    ).json();
+                    data.items.forEach((item) => items.push(item));
+                    amount = data.pageInfo.totalResults;
+                    currentPageToken = data.nextPageToken;
+                    itemsProcessed += data.items.length;
+                    if (!currentPageToken) break;
+                } else {
+                    const data = await (
+                        await fetch(
+                            `https://yt.lemnoslife.com/noKey/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${playlistId}&pageToken=${currentPageToken}`
+                        )
+                    ).json();
+                    currentPageToken = data.nextPageToken;
+                    data.items.forEach((item) => items.push(item));
+                    itemsProcessed += data.items.length;
+                    progressCb(
+                        `Processed ${itemsProcessed}/${amount} videos | ${(
+                            (itemsProcessed / amount) *
+                            100
+                        ).toFixed(2)}% done`
+                    );
+                    if (currentPageToken == undefined) {
+                        console.log("\nDone");
+                        break;
+                    }
+                }
+                await sleep(50);
+            }
         }
         return items.reverse();
     };
@@ -118,7 +155,7 @@
             }, localStorage.getItem("key"));
         } catch (e) {
             title.text(
-                "Error getting data, make sure you have set an API key in settings"
+                "Error getting data, try setting an API key in settings, or try again later."
             );
             loadButton.hide();
             return;
