@@ -1,4 +1,4 @@
-const _getPlaylistIdFromYoutubeChannelUrl = async (url) => {
+const getPlaylistIdFromYoutubeChannelUrl = async (url) => {
     const data = await (await fetch("https://uncors.vercel.app/?" + new URLSearchParams({
         url: url
     }))).text();
