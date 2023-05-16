@@ -1,9 +1,10 @@
-const getPlaylistIdFromYoutubeChannelUrl = async (url) => {
+const _getPlaylistIdFromYoutubeChannelUrl = async (url) => {
     const data = await (await fetch("https://uncors.vercel.app/?" + new URLSearchParams({
         url: url
     }))).text();
-    const result = data.match(/"(channelId)":"((\\"|[^"])*)"/i);
-    return result ? (typeof result[2] === "string" && result[2].replace("UC", "UU")) : null; 
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data, "text/html");
+    return new URLSearchParams(new URL(doc.querySelector('link[title="RSS"]').href).search).get("channel_id").replace("UC", "UU");
 }
 
 const youtubeUrlInput = $("#youtube_url");
